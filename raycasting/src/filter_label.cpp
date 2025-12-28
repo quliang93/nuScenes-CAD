@@ -1,5 +1,5 @@
 //
-// Created by bruce on 2021/12/12.
+//
 //
 
 #include "opencv2/opencv.hpp"
