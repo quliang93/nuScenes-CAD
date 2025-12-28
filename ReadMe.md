@@ -26,7 +26,11 @@ The nuScenes-CAD dataset organizes data by scenes, with each scene lasting appro
 </figure>
 
 ### Temporal Semantic Point Cloud Fusion
-
+We first construct a dense point cloud map for each scene using the LiDAR segmentation annotations. For a scene with N samples, let $P_i \in \mathbb{R}^4$ denote the semantic point cloud of the i-th sample, where $P_i = \{(x_j, y_j, z_j, cls_j) \mid j=1,\dots,M\}$. Each point includes position $(x,y,z)$ and semantic class $cls$ from nuScenes LiDARSeg.
+Since $P_i$ is in LiDAR coordinates, we transform it to the global map frame using the associated sensor calibration $Tf^{lidar \to ego}$ and ego pose $Tf^{ego \to map}$:
+$$P_i^{map} = Tf^{ego \to map} \cdot Tf^{lidar \to ego} \cdot P_i^{lidar}$$
+To avoid trailing artifacts from moving objects during temporal fusion, we filter out dynamic classes (e.g., pedestrians, vehicles) based on semantics, retaining only static points:
+$$map = \textbf{Static}(P_1^{map}, \dots, P_N^{map})$$
 ### Cross-Frame Instance Enhancement
 
 ### Ray-based Accessible Depth Calculation
