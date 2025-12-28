@@ -41,6 +41,22 @@ $$map = \textbf{Static}(P_1^{map}, \dots, P_N^{map})$$
 
 
 ### Cross-Frame Instance Enhancement
+2.1 provides static semantic elements (e.g., vegetation, curbs, buildings) for describing scene traversability. Direct temporal fusion of dynamic objects causes trailing artifacts that interfere with current traversability judgment, while using only the current frame leads to sparse obstacle representation. To address this, we introduce Cross-Frame Instance Enhancement (CFIE) to increase the point cloud density of dynamic objects observed in the current sample. 
+
+
+Core idea: Track moving instances across frames and transform their point clouds from the entire tracklet to the target instance box in the i-th frame, thereby densifying its representation. For each dynamic instance $obj_k$ in the i-th sample (e.g., pedestrian, vehicle, identified via 3D box), with K such instances total, the pre-enhanced point cloud is $P_i^{obj_k} \in P_i$, comprising all points within $obj_k$’s 3D box that match its class, with total count $N_k$. The instance box pose is $pose_k$.
+Thanks to nuScenes’ per-scene instance tracking, we obtain the full tracklet for $obj_k$: 
+
+$$Seq^{obj_k}=\{(P^{obj_k}_1, pose_1), \dots, (P^{obj_k}_T, pose_T)\}$$
+
+
+We transform all points from the tracklet to the i-th frame’s box coordinate to enhance density. Since nuScenes 3D boxes are in map coordinates, we obtain the enhanced sequence $Seq^{\text{E}(obj_k)}=\{EP_1^{obj_k}, \dots, EP_T^{obj_k}\}$ according to cross-frame transformations. Merging with $P^{obj_k}_i$ yields the final enhanced representation for $obj_k$ in the i-th frame, with total points:
+
+
+
+$$\underbrace{N_k}_{\text{current sample}} + \underbrace{N_1 + N_2 + \dots + N_T}_{\text{tracked sequence}}$$
+
+
 
 ### Ray-based Accessible Depth Calculation
 
