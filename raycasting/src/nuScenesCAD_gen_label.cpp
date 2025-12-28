@@ -1,7 +1,3 @@
-//
-// Created by ZYN on 2025/7/26.
-//
-
 #include <iostream>
 #include <filesystem>
 #include <fstream>
@@ -226,8 +222,7 @@ int main(int argc, char **argv)
             {"sidewalk", cv::Vec3b(232, 35, 244)}
     };
 
-//    Path dataDir = "/home/vsisauto/temp/cpp/carla_data/data/nuScenes-CAD/"; // my_computer
-    Path dataDir = "/home/vsisauto/Projects/lift-splat-shoot/nuScenes-CAD/"; // 4090-server
+    Path dataDir = "your-nuScenes-CAD-path/"; //
     size_t laserNum = 384;
     double resolution = 40. / 200;  // meter / pixel
 
