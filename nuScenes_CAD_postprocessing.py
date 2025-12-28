@@ -1,5 +1,5 @@
 # nuScenes-CAD post_processing
-# By: ZYN
+# By: 
 # Date: 2025/8/28
 
 import os

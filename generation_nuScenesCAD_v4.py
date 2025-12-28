@@ -1,6 +1,6 @@
 # Cross-Frame Instance Augmentation
 # Date: 2025/7/16
-# By: ZYN
+# By: 
 
 import os
 import cv2
