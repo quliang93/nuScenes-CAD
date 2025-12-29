@@ -62,7 +62,7 @@ $$\underbrace{N_k}_{\text{current sample}} + \underbrace{N_1 + N_2 + \dots + N_T
 
 
 ### Ray-based Accessible Depth Calculation
-After instance enhancement, we obtain a dense semantic point cloud representation in the ego-vehicle coordinate system. We crop a ±20m range along the forward direction and project it onto a 200×200 BEV grid (0.2m resolution per pixel). From the ego center, we cast $L=384$ rays outward. Each ray stops upon hitting a non-traversable obstacle pixel (e.g., vehicle, pedestrian, traffic cone, vegetation) and computes the distance as the traversable depth in that direction. If no obstacle is encountered within the 20m limit, the depth is set to $D_{max}$ = 20m.
+Following instance enhancement, we obtain a dense semantic point cloud in the ego-vehicle coordinate system for each sample. We crop a ±20m region around the ego vehicle and project it onto a 200×200 BEV grid (0.2m/pixel resolution). L=384 rays are cast outward from the ego center. Each ray stops at the first non-traversable obstacle pixel (e.g., vehicles, pedestrians, traffic cones, vegetation) and records the distance as the accessible depth. If no obstacle is hit within 20m, the depth is set to D_max = 20m.
 
 
 ## How to use
