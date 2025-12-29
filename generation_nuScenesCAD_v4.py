@@ -7,6 +7,7 @@ import cv2
 import json
 import torch
 import struct
+import argparse
 import shutil
 import numpy as np
 import open3d as o3d
@@ -475,13 +476,12 @@ def colored_points(points, labels, idx2name, colormap):
     vis.destroy_window()    
 
 
-def main():
-    nusc = NuScenes(version="v1.0-trainval",
-                dataroot="../data/trainval",
+def main(args):
+    nusc = NuScenes(version=args.version, # "v1.0-trainval"
+                dataroot= args.source, #"./data/trainval",
                 verbose=True)
 
-
-    nuCAD_dataroot = "../nuScenes-CAD-scenes-split/"
+    nuCAD_dataroot = args.target # "./nuScenes-CAD-scenes-split/"
     CAD_LABEL_PATH = os.path.join(nuCAD_dataroot, "CAD_LABEL") 
     if not os.path.exists(nuCAD_dataroot):
         os.makedirs(nuCAD_dataroot)
@@ -676,5 +676,12 @@ def main():
  
     with open(os.path.join(CAD_LABEL_PATH, "scene_id2sample_id.json"), 'w', encoding='utf-8') as ff:
         json.dump(scene_within_id2sample_id, ff)
+
+
 if __name__ == "__main__":
-    main()
+    parser = argparse.ArgumentParser(description='Scene Splitting of nuScenes-CAD')
+    parser.add_argument('--version', type=str, default='v1.0-trainval', help='NuScenes dataset version, defatul is v1.0-trainval')
+    parser.add_argument('--source', type=str, default='./data/trainval', help='Path to the nuScenes dataset')
+    parser.add_argument('--target', type=str, default='./nuScenes-CAD-scene-split', help='Directory where the nuScenes-CAD will be saved')
+    args = parser.parse_args()
+    main(args)

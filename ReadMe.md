@@ -70,7 +70,21 @@ Following instance enhancement, we obtain a dense semantic point cloud in the eg
 
 
 ## How to generate nuScenes-CAD dataset?
+**Preparation**: Before starting, please download the standard and complete nuScenes dataset along with the corresponding nuScenes-lidarseg annotations in advance. Clone/download this repository and set up the required environment.   
+The entire automated annotation pipeline consists of three main steps: (1) Scene splitting (2) Label generation (3) Post-processing. Steps (1) and (3) are implemented in Python, while step (2) is implemented in C++.
+The tools required for this pipeline include:   
+- nuscenes-devkit==1.1.11   
+- PCL (Point Cloud Library)   
+- OpenCV library
+
 ### Scene Splitting
+```Bash
+python generation_nuScenesCAD_v4.py \
+ --version v1.0-trainval \
+ --source /path/to/nuScenes \
+ --target /path/to/nuScenes-CAD-scene-split
+```
+
 
 ### Label Generation
 
