@@ -19,7 +19,7 @@ CAD represents traversable space as a set of maximum accessible depths in all ra
 </figure>
 
 ## Automated Generation Pipeline
-The nuScenes-CAD dataset organizes data by scenes, with each scene lasting approximately 20 seconds. Within each scene, keyframes (samples) and their associated multi-view images and point clouds are annotated at 2 Hz (yielding ~40 annotated samples per scene). Our automated labeling pipeline leverages these rich annotations to generate CAD labels for key samples in each scene. Each CAD label consists of $L=384$ accessible depths radiating from the ego vehicle in all directions around it. The automated generation process comprises three key steps: (1) Temporal Semantic Point Cloud Fusion, (2) Cross-Frame Instance Enhancement, and (3) Ray-based Accessible Depth Calculation, as shown in the figure below.
+The nuScenes dataset organizes data by scenes, with each scene lasting approximately 20 seconds. Within each scene, keyframes (samples) and their associated multi-view images and point clouds are annotated at 2 Hz (yielding ~40 annotated samples per scene). Our automated labeling pipeline leverages these rich annotations to generate CAD labels for key samples in each scene. Each CAD label consists of $L=384$ accessible depths radiating from the ego vehicle in all directions around it. The automated generation process comprises three key steps: (1) Temporal Semantic Point Cloud Fusion, (2) Cross-Frame Instance Enhancement, and (3) Ray-based Accessible Depth Calculation, as shown in the figure below.
 
 
 <figure>
@@ -27,7 +27,7 @@ The nuScenes-CAD dataset organizes data by scenes, with each scene lasting appro
 </figure>
 
 ### Temporal Semantic Point Cloud Fusion
-We first construct a dense point cloud map for each scene using the LiDAR segmentation annotations. For a scene with N samples, let $P_i \in \mathbb{R}^4$ denote the semantic point cloud of the i-th sample, where $P_i = \{(x_j, y_j, z_j, cls_j) \mid j=1,\dots,M\}$. Each point includes position $(x,y,z)$ and semantic class $cls$ from nuScenes LiDARSeg.
+We first construct a dense point cloud map for each scene using the LiDAR segmentation annotations. For a scene with $N$ samples, let $P_i \in \mathbb{R}^4$ denote the semantic point cloud of the i-th sample, where $P_i = \{(x_j, y_j, z_j, cls_j) \mid j=1,\dots,M\}$. Each point includes position $(x,y,z)$ and semantic class $cls$ from [nuScenes LiDARSeg](https://www.nuscenes.org/nuscenes#download).
 Since $P_i$ is in LiDAR coordinates, we transform it to the global map frame using the associated sensor calibration $Tf^{lidar \to ego}$ and ego pose $Tf^{ego \to map}$:  
 
 
@@ -42,16 +42,18 @@ $$map = \textbf{Static}(P_1^{map}, \dots, P_N^{map})$$
 
 
 ### Cross-Frame Instance Enhancement
-2.1 provides static semantic elements (e.g., vegetation, curbs, buildings) for describing scene traversability. Direct temporal fusion of dynamic objects causes trailing artifacts that interfere with current traversability judgment, while using only the current frame leads to sparse obstacle representation. To address this, we introduce Cross-Frame Instance Enhancement (CFIE) to increase the point cloud density of dynamic objects observed in the current sample. 
+The semantic point cloud map provides static semantic elements (e.g., vegetation, curbs, buildings) for describing scene traversability. For dynamic obstacles (such as pedestrians, cyclists, vehicles, etc.), using only the current frame point cloud results in sparse object representations, while directly performing temporal fusion within a scene leads to trailing artifacts. Therefore, we introduce Cross-Frame Instance Enhancement (CFIE) to increase the point cloud density of objects in the current sample.
+
+**Core idea**: By utilizing nuScenes' instance-level tracking within the same scene, we align the point clouds of the same instance across different frames to the 3D bounding box of the target frame, thereby significantly increasing the point cloud density of dynamic objects in the target frame.
 
 
-Core idea: Track moving instances across frames and transform their point clouds from the entire tracklet to the target instance box in the i-th frame, thereby densifying its representation. For each dynamic instance $obj_k$ in the i-th sample (e.g., pedestrian, vehicle, identified via 3D box), with K such instances total, the pre-enhanced point cloud is $P_i^{obj_k} \in P_i$, comprising all points within $obj_k$’s 3D box that match its class, with total count $N_k$. The instance box pose is $pose_k$.
-Thanks to nuScenes’ per-scene instance tracking, we obtain the full tracklet for $obj_k$: 
+Assume that the dynamic instance to be enhanced in the i-th sample is $obj_k$. Before enhancement, the point cloud within its instance 3D bounding box is $P_i^{obj_k} \in P_i$, consisting of all points inside the 3D box that match the instance’s class, with a total count of $N_k$. The pose of this instance box is $pose_k$. Thanks to the instance-level tracking provided by nuScenes, we can obtain the complete tracklet of $obj_k$ within the scene:
+
 
 $$Seq^{obj_k}=\{(P^{obj_k}_1, pose_1), \dots, (P^{obj_k}_T, pose_T)\}$$
 
 
-We transform all points from the tracklet to the i-th frame’s box coordinate to enhance density. Since nuScenes 3D boxes are in map coordinates, we obtain the enhanced sequence $Seq^{\text{E}(obj_k)}=\{EP_1^{obj_k}, \dots, EP_T^{obj_k}\}$ according to cross-frame transformations. Merging with $P^{obj_k}_i$ yields the final enhanced representation for $obj_k$ in the i-th frame, with total points:
+We transform the point clouds describing the same instance from different timestamps into the corresponding 3D bounding box of the instance in the i-th frame. This enhances the point cloud density of the instance in the current frame, resulting in the enhanced point cloud representation of $obj_k$ in the i-th frame, with a total point count of:
 
 
 
