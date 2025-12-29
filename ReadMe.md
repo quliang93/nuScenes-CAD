@@ -111,5 +111,30 @@ python nuScenes_CAD_postprocessing.py
 ```
 
 ## How to use
+Here we recommend two main usage approaches:
+
+1. Official style (compatible with the nuScenes official toolchain)   
+2. Deployment style (suitable for real robot platform deployment and self-collected data)
+
+After running the complete pipeline above, a **CAD_LABEL** folder will be generated under the nuScenes-CAD-scene-split directory. This folder contains all label files required for CAD tasks and is fully aligned with the corresponding **sample token** names in the nuScenes dataset.
+
+Approach 1: Official style (recommended for research and development)
+
+- Users can directly use tools provided by the official nuScenes (such as nuscenes-devkit) to load and visualize these labels.   
+- When building a custom Dataset, simply use the sample’s token name to index the corresponding CAD label file.
+
+
+Approach 2: Deployment style (recommended for real robot deployment and self-collected data)
+
+- When deploying on actual robot platforms, self-collected data is usually organized in a structure similar to nuScenes-CAD-scene-split, namely: (1) folders divided by scene (2) within each scene, point clouds, intrinsics, extrinsics, images, and other time-series data are saved in chronological order
+
+- This structure better suits real-time collection and deployment needs, so we recommend organizing your self-collected dataset in the same format as nuScenes-CAD-scene-split.
 
 ## Reference
+This repo was inspired by several excellent open-source works. We would like to express our sincere thanks and respect to the following repositories and their authors:
+
+- [nuscenes-devkit](https://github.com/nutonomy/nuscenes-devkit)
+
+- [OpenOcc Dataset](https://github.com/OpenDriveLab/OccNet?tab=readme-ov-file#openocc-dataset)
+
+- [CADLabeler](https://github.com/BruceXSK/CADLabeler)
