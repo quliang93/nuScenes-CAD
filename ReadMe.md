@@ -8,7 +8,11 @@ nuScenes is a widely-adopted, large-scale open-source dataset specifically desig
 2.1 [Temporal Semantic Point Cloud Fusion](#temporal-semantic-point-cloud-fusion)   
 2.2 [Cross-Frame Instance Enhancement](#cross-frame-instance-enhancement)   
 2.3 [Ray-based Accessible Depth Calculation](#ray-based-accessible-depth-calculation)   
-3. [How to use](#how-to-use)
+3. [How to generate nuScenes-CAD dataset?](#how-to-use)   
+3.1 [Scene Splitting](#scene-splitting)   
+3.2 [Label Generation](#label-generation)   
+3.3 [Postprocessing](#postprocessing)   
+4. [How to use](#how-to-use)
 4. [Reference](#reference)
 
 ## Circular Accessible Depth
@@ -62,10 +66,16 @@ $$\underbrace{N_k}_{\text{current sample}} + \underbrace{N_1 + N_2 + \dots + N_T
 
 
 ### Ray-based Accessible Depth Calculation
-Following instance enhancement, we obtain a dense semantic point cloud in the ego-vehicle coordinate system for each sample. We crop a ±20m region around the ego vehicle and project it onto a 200×200 BEV grid (0.2m/pixel resolution). L=384 rays are cast outward from the ego center. Each ray stops at the first non-traversable obstacle pixel (e.g., vehicles, pedestrians, traffic cones, vegetation) and records the distance as the accessible depth. If no obstacle is hit within 20m, the depth is set to D_max = 20m.
+Following instance enhancement, we obtain a dense semantic point cloud in the ego-vehicle coordinate system for each sample. We crop a ±20m region around the ego vehicle and project it onto a 200×200 BEV grid (0.2m/pixel resolution). L=384 rays are cast outward from the ego center. Each ray stops at the first non-traversable obstacle pixel (e.g., vehicles, pedestrians, traffic cones, vegetation) and records the distance as the accessible depth. If no obstacle is hit within 20m, the depth is set to $D_{max}$ = 20m.
 
+
+## How to generate nuScenes-CAD dataset?
+### Scene Splitting
+
+### Label Generation
+
+### Postprocessing
 
 ## How to use
-
 
 ## Reference
