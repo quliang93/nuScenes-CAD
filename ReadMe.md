@@ -50,7 +50,7 @@ The semantic point cloud map provides static semantic elements (e.g., vegetation
 Assume that the dynamic instance to be enhanced in the i-th sample is $obj_k$. Before enhancement, the point cloud within its instance 3D bounding box is $P_i^{obj_k} \in P_i$, consisting of all points inside the 3D box that match the instance’s class, with a total count of $N_k$. The pose of this instance box is $pose_k$. Thanks to the instance-level tracking provided by nuScenes, we can obtain the complete tracklet of $obj_k$ within the scene:
 
 
-$$Seq^{obj_k}=\{(P^{obj_k}_1, pose_1), \dots, (P^{obj_k}_T, pose_T)\}$$
+$$Seq^{obj_k}=\{ (P^{obj_k}_1, pose_1), \dots, (P^{obj_k}_T, pose_T) \}$$
 
 
 We transform the point clouds describing the same instance from different timestamps into the corresponding 3D bounding box of the instance in the i-th frame. This enhances the point cloud density of the instance in the current frame, resulting in the enhanced point cloud representation of $obj_k$ in the i-th frame, with a total point count of:
