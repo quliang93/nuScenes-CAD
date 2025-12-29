@@ -85,10 +85,30 @@ python generation_nuScenesCAD_v4.py \
  --target /path/to/nuScenes-CAD-scene-split
 ```
 
-
 ### Label Generation
+After performing scene splitting, we obtain the nuScenes-CAD-scene-split dataset, which follows the official nuScenes scene definitions (a total of 850 scenes in the trainval set, with 700 used for training and 150 for validation). Subsequently, we compile the automated label generation from source in the **raycasting** directory. This executable iterates through the **seg_img** folder of each scene in the nuScenes-CAD-scene-split directory and generates the corresponding labels based on the BEV segmentation images.
+
+```Bash
+cd /this-repo/raycasting/
+mkdir build && cd build
+cmake ..
+make
+
+./nuScenesCAD_gen_label
+```
+**Note**: The above process uses the default path to nuScenes-CAD-scene-split. If you wish to modify it, please edit line 225 in the file raycasting/src/nuScenesCAD_gen_label.cpp.
 
 ### Postprocessing
+Finally, post-processing is applied to nuScenes-CAD-scene-split to:
+
+- Remove redundant directories
+- Convert point clouds to standard .pcd format (compatible with PCL or PyntCloud)   
+- Create a CAD_LABEL folder containing per-sample CAD labels (named by sample token) and visualization canvases for GT/prediction results
+- Generate an index for associating the t-th frame of each scene with its standard sample token.
+
+```Bash
+python nuScenes_CAD_postprocessing.py
+```
 
 ## How to use
 

@@ -222,7 +222,7 @@ int main(int argc, char **argv)
             {"sidewalk", cv::Vec3b(232, 35, 244)}
     };
 
-    Path dataDir = "your-nuScenes-CAD-path/"; //
+    Path dataDir = "./nuScenes-CAD-scene-split/"; //
     size_t laserNum = 384;
     double resolution = 40. / 200;  // meter / pixel
 

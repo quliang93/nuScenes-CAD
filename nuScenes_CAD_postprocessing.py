@@ -59,7 +59,7 @@ def visualize_pred(seg_img, label):
 
 
 if __name__ == "__main__":
-    dataset_path = "/home/vsisauto/Projects/lift-splat-shoot/nuScenes-CAD-scene-split/"# "../nuScenes-CAD/"
+    dataset_path = "/path/to/nuScenes-CAD-scene-split/"# "../nuScenes-CAD/"
     scene_dirs = os.listdir(dataset_path)
     print(f"Scene number: {len(scene_dirs) - 1}")
     
