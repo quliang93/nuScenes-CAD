@@ -122,7 +122,7 @@ Approach 1: Official style (recommended for research and development)
 
 - Users can directly use tools provided by the official nuScenes (such as nuscenes-devkit) to load and visualize these labels.   
 - When building a custom Dataset, simply use the sample’s token name to index the corresponding CAD label file.
-
+- Available at: [CAD_LABEL.zip](https://drive.google.com/file/d/1W64T4RdQUGZPSHlWi3tkUPqgZdRydJvT/view?usp=sharing)
 
 Approach 2: Deployment style (recommended for real robot deployment and self-collected data)
 
